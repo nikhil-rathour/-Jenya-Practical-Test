@@ -1,9 +1,11 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
 const authRoutes = require('./routes/auth.routes');
 const eventRoutes = require('./routes/event.routes');
 const connectDB = require('./config/db');
+const swaggerSpec = require('./config/swagger');
 
 const app = express();
 
@@ -18,6 +20,9 @@ app.get('/', (req, res) => {
 
 app.use('/auth', authRoutes);
 app.use('/events', eventRoutes);
+app.use('/api', authRoutes);
+app.use('/api/events', eventRoutes);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const PORT = process.env.PORT || 5000;
 
